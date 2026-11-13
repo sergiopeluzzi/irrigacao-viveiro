@@ -494,7 +494,7 @@ Repositório: **github.com/sergiopeluzzi/irrigacao-viveiro** (privado). Segredos
    - `CORS_ORIGINS` = deixe em branco por enquanto (preenche no passo 5)
 3. O build instala, compila, cria as tabelas (`prisma migrate deploy`) e cria o admin e o controlador (seed). Depois do deploy, `https://<sua-api>.onrender.com/saude` deve responder `{"ok":true,"mqtt":true}`.
 
-> **Plano grátis dorme** após 15 min sem acesso, e dormindo a API não recebe o MQTT (o histórico perde eventos; o ESP32 continua irrigando normalmente). Para amenizar: no GitHub → Settings → Secrets and variables → Actions → **Variables** → `API_URL` = URL da API. O workflow `despertador.yml` acessa `/saude` a cada 10 min. Ele está em `ferramentas/despertador.yml` e precisa ir para `.github/workflows/` (o token do `gh` precisa da permissão `workflow`: `gh auth refresh -h github.com -s workflow`). Para uso real com cliente, o plano Starter (~US$ 7/mês) é o recomendado.
+> **Plano grátis dorme** após 15 min sem acesso, e dormindo a API não recebe o MQTT (o histórico perde eventos; o ESP32 continua irrigando normalmente). Para amenizar: no GitHub → Settings → Secrets and variables → Actions → **Variables** → `API_URL` = URL da API. O workflow `despertador.yml` acessa `/saude` a cada 10 min. Ativo desde 2026-11-13 (`.github/workflows/despertador.yml`, variável `API_URL` já configurada). Para uso real com cliente, o plano Starter (~US$ 7/mês) é o recomendado.
 
 ### 4. App — Vercel
 1. vercel.com → Add New → Project → importe `irrigacao-viveiro`.
