@@ -1,0 +1,14 @@
+node_modules/
+dist/
+dev-dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+apps/api/src/generated/
+.DS_Store
+npm-debug.log*
+
+# Credenciais do firmware
+firmware/segredos.h

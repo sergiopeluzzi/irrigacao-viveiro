@@ -1,0 +1,70 @@
+// A URL do banco fica em prisma.config.ts.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PerfilUsuario {
+  ADMIN // configura rotinas, setores, parâmetros e usuários
+  OPERADOR // opera: pausa visita, só motor, acionamento manual, blocos com mudas/vazio
+}
+
+model Usuario {
+  id        String        @id @default(uuid())
+  nome      String
+  email     String        @unique
+  senhaHash String
+  perfil    PerfilUsuario @default(OPERADOR)
+  ativo     Boolean       @default(true)
+  criadoEm  DateTime      @default(now())
+
+  comandos Comando[]
+}
+
+// Um ESP32 no campo. O prefixo é a "raiz" dos tópicos MQTT dele (MQTT_PREFIXO no firmware).
+model Controlador {
+  id           String    @id @default(uuid())
+  nome         String
+  prefixo      String    @unique
+  online       Boolean   @default(false)
+  vistoEm      DateTime? // última mensagem recebida dele
+  ultimoStatus Json? // último <prefixo>/status
+  ultimaConfig Json? // último <prefixo>/config
+  criadoEm     DateTime  @default(now())
+
+  eventos  Evento[]
+  comandos Comando[]
+}
+
+// Histórico: cada linha de log publicada pelo ESP32 em <prefixo>/evento.
+model Evento {
+  id             Int         @id @default(autoincrement())
+  controladorId  String
+  controlador    Controlador @relation(fields: [controladorId], references: [id], onDelete: Cascade)
+  recebidoEm     DateTime    @default(now())
+  horaDispositivo String // "HH:MM:SS" no relógio do ESP32
+  mensagem       String
+
+  @@index([controladorId, id])
+}
+
+// Auditoria: quem mandou qual comando e o que o controlador respondeu.
+model Comando {
+  id            Int         @id @default(autoincrement())
+  controladorId String
+  controlador   Controlador @relation(fields: [controladorId], references: [id], onDelete: Cascade)
+  usuarioId     String
+  usuario       Usuario     @relation(fields: [usuarioId], references: [id])
+  texto         String
+  resposta      String? // null = o controlador não respondeu a tempo
+  enviadoEm     DateTime    @default(now())
+  respondidoEm  DateTime?
+
+  @@index([controladorId, id])
+}

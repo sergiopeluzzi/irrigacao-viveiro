@@ -1,0 +1,5 @@
+# Bibliotecas usadas pelo Wokwi
+RTClib
+Adafruit BusIO
+ArduinoJson
+PubSubClient

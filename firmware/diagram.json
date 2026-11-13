@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "author": "Irrigacao Viveiro",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-ds1307", "id": "rtc", "top": 0, "left": -240, "attrs": {} },
+    { "type": "wokwi-led", "id": "led_bomba", "top": -110, "left": 180, "attrs": { "color": "red", "label": "Bomba" } },
+    { "type": "wokwi-led", "id": "led_s1", "top": -110, "left": 240, "attrs": { "color": "limegreen", "label": "S1" } },
+    { "type": "wokwi-led", "id": "led_s2", "top": -110, "left": 280, "attrs": { "color": "limegreen", "label": "S2" } },
+    { "type": "wokwi-led", "id": "led_s3", "top": -110, "left": 320, "attrs": { "color": "limegreen", "label": "S3" } },
+    { "type": "wokwi-led", "id": "led_s4", "top": -110, "left": 360, "attrs": { "color": "limegreen", "label": "S4" } },
+    { "type": "wokwi-led", "id": "led_s5", "top": -110, "left": 420, "attrs": { "color": "cyan", "label": "S5" } },
+    { "type": "wokwi-led", "id": "led_s6", "top": -110, "left": 460, "attrs": { "color": "cyan", "label": "S6" } },
+    { "type": "wokwi-pushbutton", "id": "btn_pausa", "top": 140, "left": -240, "attrs": { "color": "yellow", "label": "Pausa visita" } },
+    { "type": "wokwi-pushbutton", "id": "btn_motor", "top": 220, "left": -240, "attrs": { "color": "blue", "label": "So motor" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "rtc:GND", "esp:GND.1", "black", [] ],
+    [ "rtc:5V", "esp:3V3", "red", [] ],
+    [ "rtc:SDA", "esp:21", "green", [] ],
+    [ "rtc:SCL", "esp:22", "blue", [] ],
+
+    [ "esp:23", "led_bomba:A", "red", [] ],
+    [ "esp:19", "led_s1:A", "green", [] ],
+    [ "esp:18", "led_s2:A", "green", [] ],
+    [ "esp:5", "led_s3:A", "green", [] ],
+    [ "esp:17", "led_s4:A", "green", [] ],
+    [ "esp:16", "led_s5:A", "cyan", [] ],
+    [ "esp:4", "led_s6:A", "cyan", [] ],
+    [ "led_bomba:C", "esp:GND.2", "black", [] ],
+    [ "led_s1:C", "esp:GND.2", "black", [] ],
+    [ "led_s2:C", "esp:GND.2", "black", [] ],
+    [ "led_s3:C", "esp:GND.2", "black", [] ],
+    [ "led_s4:C", "esp:GND.2", "black", [] ],
+    [ "led_s5:C", "esp:GND.2", "black", [] ],
+    [ "led_s6:C", "esp:GND.2", "black", [] ],
+
+
+    [ "btn_pausa:1.r", "esp:32", "yellow", [] ],
+    [ "btn_pausa:2.r", "esp:GND.1", "black", [] ],
+    [ "btn_motor:1.r", "esp:33", "blue", [] ],
+    [ "btn_motor:2.r", "esp:GND.1", "black", [] ]
+  ],
+  "dependencies": {}
+}

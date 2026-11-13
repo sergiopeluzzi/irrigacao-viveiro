@@ -1,0 +1,15 @@
+# O plano grátis do Render "dorme" depois de 15 min sem acesso, e dormindo a API não recebe
+# o MQTT (o histórico perde eventos). Este workflow acessa a API a cada 10 minutos.
+# Configure em Settings > Secrets and variables > Actions > Variables: API_URL (ex.: https://viveiro-api.onrender.com)
+# Obs.: o GitHub pode atrasar execuções agendadas; com o plano pago do Render, apague este arquivo.
+name: Despertador da API
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    if: ${{ vars.API_URL != '' }}
+    steps:
+      - run: curl -fsS --max-time 60 "${{ vars.API_URL }}/saude"

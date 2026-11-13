@@ -1,0 +1,38 @@
+# Blueprint do Render para a API (Render > New > Blueprint > escolher este repositório).
+# As variáveis com "sync: false" são pedidas pelo Render na criação (preencha lá, nunca no git).
+services:
+  - type: web
+    name: viveiro-api
+    runtime: node
+    plan: free # grátis: "dorme" após 15 min sem acesso (ver ferramentas/despertador.yml)
+    region: oregon
+    rootDir: .
+    # No plano grátis não existe "pre-deploy": as migrações e o seed rodam no fim do build.
+    buildCommand: npm ci --include=dev && npm run build -w apps/api && npm exec -w apps/api -- prisma migrate deploy && npm run seed -w apps/api
+    startCommand: npm run start:prod -w apps/api
+    healthCheckPath: /saude
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL # Neon > Connection string (com ?sslmode=require)
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS # URL do app na Vercel, ex.: https://irrigacao-viveiro.vercel.app
+        sync: false
+      - key: MQTT_URL # ex.: mqtts://xxxxxxxx.s1.eu.hivemq.cloud:8883
+        sync: false
+      - key: MQTT_USUARIO # credencial do HiveMQ Cloud só para a API
+        sync: false
+      - key: MQTT_SENHA
+        sync: false
+      - key: SEED_ADMIN_NOME
+        sync: false
+      - key: SEED_ADMIN_EMAIL # primeiro administrador (criado só se ainda não existir)
+        sync: false
+      - key: SEED_ADMIN_SENHA
+        sync: false
+      - key: SEED_CONTROLADOR_NOME
+        value: Viveiro
+      - key: SEED_CONTROLADOR_PREFIXO # igual ao MQTT_PREFIXO do firmware
+        value: viveiro-cafe/proto-bea19c
