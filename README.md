@@ -3,7 +3,7 @@
 Controlador de irrigação/fertirrigação para um viveiro de mudas de café, com app web para acesso remoto.
 Substitui o temporizador atual (que só permite "tempo em tempo" e "tempo ligado").
 
-> Status: **Fases 1 a 4 prontas (firmware no simulador + app web rodando localmente) — próximo passo: Fase 5 (sensores) ou publicar o app.**
+> Status: **Fases 1 a 4 prontas e publicadas (app: https://irrigacao-viveiro.vercel.app) — próximo passo: Fase 5 (sensores) ou compra do hardware (Fase 6).**
 > Última atualização: 2026-11-12
 
 ---
@@ -454,7 +454,7 @@ Tudo se atualiza em tempo real; se a conexão cair, o app reconecta e ressincron
 - Correção durante o teste: o broker público marca até as mensagens ao vivo como "retidas"; a API agora só ignora as retidas que chegam logo após assinar (senão a "última notícia" ficava parada).
 
 ### Pendências da Fase 4
-- **Publicar**: Postgres (Neon), API (Render — plano pago, o grátis dorme e perde eventos/histórico), app (Vercel), `CORS_ORIGINS` e `VITE_API_URL`.
+- ~~Publicar~~ feito em 2026-11-13 (seção 12). API no Render **grátis**: dorme sem acesso e perde eventos — ativar o despertador ou passar para o Starter antes do cliente usar.
 - **Broker com senha** (EMQX Cloud + TLS no ESP32 e na API) antes de ir para o cliente — preparado na seção 12.
 - Trocar a senha do admin do seed; criar os usuários do cliente.
 - O firmware que está no Wokwi ainda é o de antes do fuso de Rondônia — colar o `sketch.ino` atual.
@@ -507,6 +507,17 @@ Repositório: **github.com/sergiopeluzzi/irrigacao-viveiro** (privado). Segredos
 2. Firmware: copie `firmware/segredos.exemplo.h` para `segredos.h`, preencha o Address do EMQX e o usuário `viveiro-esp32`. No **Wokwi**, crie uma aba `segredos.h` com esse conteúdo e cole o `sketch.ino` atual.
    ⚠️ Não salve/compartilhe o projeto do Wokwi com a senha dentro (projetos salvos no Wokwi grátis são públicos).
 3. Rode a simulação: no Serial deve aparecer `MQTT conectado em <cluster>`; no app, o controlador fica **Online**.
+
+### No ar desde 2026-11-13
+| Peça | Onde |
+|------|------|
+| App | https://irrigacao-viveiro.vercel.app |
+| API | https://viveiro-api-5tq7.onrender.com (`/saude` → `{"ok":true,"mqtt":true}`) |
+| Broker | EMQX Serverless `d22ad7dc.ala.us-east-1.emqxsl.com:8883` (TLS, cadeia DigiCert Global Root G2 conferida) |
+| Banco | Neon |
+
+Testado: API conectada ao EMQX, CORS liberado só para o app, ESP32 simulado conectado com TLS + usuário/senha e aparecendo online no app.
+> No Wokwi, o controlador fica "offline" por alguns segundos quando a aba do simulador vai para segundo plano (o navegador desacelera a simulação e o broker deixa de receber o "estou vivo"). É limitação do simulador; mantenha a janela do Wokwi visível.
 
 ### Atualizações
 - `git push` na branch `main` → Render e Vercel publicam sozinhos.
