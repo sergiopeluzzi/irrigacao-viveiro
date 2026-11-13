@@ -4,6 +4,7 @@ Controlador de irrigação/fertirrigação para um viveiro de mudas de café, co
 Substitui o temporizador atual (que só permite "tempo em tempo" e "tempo ligado").
 
 > Status: **Fases 1 a 4 prontas e publicadas (app: https://irrigacao-viveiro.vercel.app) — próximo passo: Fase 5 (sensores) ou compra do hardware (Fase 6).**
+> 📄 **Manual de utilização + documentação técnica (PDF):** [`docs/Irrigacao-Viveiro-Manual-v1.pdf`](docs/Irrigacao-Viveiro-Manual-v1.pdf)
 > Última atualização: 2026-11-12
 
 ---

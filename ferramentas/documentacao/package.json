@@ -1,0 +1,13 @@
+{
+  "name": "documentacao",
+  "private": true,
+  "type": "module",
+  "description": "Gera os prints (app local + Wokwi) e o PDF de docs/. Não faz parte dos workspaces.",
+  "scripts": {
+    "captura": "node captura.mjs ../..",
+    "pdf": "node pdf.mjs ../.. ../../docs/Irrigacao-Viveiro-Manual-v1.pdf"
+  },
+  "dependencies": {
+    "puppeteer-core": "23.11.1"
+  }
+}

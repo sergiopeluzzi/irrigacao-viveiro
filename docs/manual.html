@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Irrigação do Viveiro — Manual e Documentação Técnica v1</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+  :root { --verde: #2f6b3a; --verde-claro: #e8f0e7; --tinta: #24302a; --cinza: #66746b; --linha: #dbe3dc; --agua: #1f7fbf; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; color: var(--tinta); font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; color: var(--verde); line-height: 1.2; }
+  h1 { font-size: 22pt; margin: 0 0 6mm; }
+  h2 { font-size: 15pt; margin: 9mm 0 3mm; padding-bottom: 1.5mm; border-bottom: 1.5px solid var(--linha); break-after: avoid; }
+  h3 { font-size: 12pt; margin: 6mm 0 2mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1mm; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 9pt; background: #f1f4f0; padding: 0.3mm 1.2mm; border-radius: 1mm; }
+  pre { font-family: Consolas, "Cascadia Mono", monospace; font-size: 8.3pt; background: #f4f7f3; border: 1px solid var(--linha); border-radius: 2mm; padding: 3mm; white-space: pre-wrap; word-break: break-word; break-inside: avoid; margin: 0 0 3mm; }
+  table { width: 100%; border-collapse: collapse; margin: 1mm 0 4mm; font-size: 9.3pt; break-inside: auto; }
+  th, td { border: 1px solid var(--linha); padding: 1.6mm 2.2mm; text-align: left; vertical-align: top; }
+  th { background: var(--verde-claro); font-weight: 600; }
+  tr { break-inside: avoid; }
+  figure { margin: 3mm 0 5mm; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; max-height: 118mm; border: 1px solid var(--linha); border-radius: 2mm; box-shadow: 0 1mm 3mm rgba(0,0,0,.06); }
+  figure.baixa img { max-height: 80mm; }
+  figure.alta img { max-height: 200mm; }
+  figcaption { font-size: 8.8pt; color: var(--cinza); margin-top: 1.5mm; }
+  .lado { display: flex; gap: 4mm; justify-content: center; align-items: flex-start; break-inside: avoid; margin: 3mm 0 5mm; }
+  .lado figure { flex: 1; margin: 0; }
+  .lado figure img { max-height: 125mm; }
+  .nota { background: #fff8e6; border-left: 3px solid #e0a800; padding: 2.5mm 3.5mm; border-radius: 1mm; margin: 2mm 0 4mm; break-inside: avoid; font-size: 9.8pt; }
+  .dica { background: var(--verde-claro); border-left: 3px solid var(--verde); padding: 2.5mm 3.5mm; border-radius: 1mm; margin: 2mm 0 4mm; break-inside: avoid; font-size: 9.8pt; }
+  .parte { break-before: page; }
+  .parte > .rotulo { font-size: 9pt; letter-spacing: .15em; text-transform: uppercase; color: var(--cinza); margin-bottom: 1mm; }
+  .capa { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; }
+  .capa .topo { margin-top: 30mm; }
+  .capa .gota { width: 22mm; height: 22mm; }
+  .capa h1 { font-size: 30pt; margin: 8mm 0 3mm; }
+  .capa .sub { font-size: 14pt; color: var(--cinza); }
+  .capa .rodape { font-size: 10pt; color: var(--cinza); border-top: 1px solid var(--linha); padding-top: 4mm; }
+  .sumario { break-before: page; }
+  .sumario ol { columns: 2; column-gap: 10mm; font-size: 10pt; }
+  .kbd { border: 1px solid #c9d2ca; border-bottom-width: 2px; border-radius: 1mm; padding: 0 1.5mm; font-size: 9pt; background: #fff; white-space: nowrap; }
+  .tag { display: inline-block; border-radius: 10mm; padding: 0 2.5mm; font-size: 8.5pt; font-weight: 600; }
+  .t-op { background: #e0f2fe; color: #075985; } .t-adm { background: #fef3c7; color: #92400e; }
+  .arq { width: 100%; margin: 2mm 0 5mm; }
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <div class="topo">
+    <svg class="gota" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2f6b3a"/><path d="M32 12c-8 11-14 18-14 26a14 14 0 0 0 28 0c0-8-6-15-14-26z" fill="#e8f0e7"/><path d="M32 30c-3 4-5 7-5 10a5 5 0 0 0 10 0c0-3-2-6-5-10z" fill="#2f6b3a"/></svg>
+    <h1>Irrigação do Viveiro</h1>
+    <p class="sub">Controlador de irrigação e fertirrigação para viveiro de mudas de café</p>
+    <p class="sub" style="margin-top:10mm"><b>Manual de utilização</b> e <b>documentação técnica</b><br>Versão 1.0 (protótipo validado em simulação)</p>
+  </div>
+  <div class="rodape">
+    Viveiro de mudas de café — Rondônia · Novembro de 2026<br>
+    App: <b>irrigacao-viveiro.vercel.app</b> · Código-fonte: github.com/sergiopeluzzi/irrigacao-viveiro (privado)
+  </div>
+</section>
+
+<section class="sumario">
+  <h2>Sumário</h2>
+  <p><b>Parte I — Manual de utilização</b> (para quem opera o viveiro)</p>
+  <ol>
+    <li>O que o sistema faz</li>
+    <li>Acessando o app</li>
+    <li>Painel</li>
+    <li>Rotinas</li>
+    <li>Setores</li>
+    <li>Histórico</li>
+    <li>Ajustes e usuários</li>
+    <li>No celular</li>
+    <li>Perguntas frequentes</li>
+  </ol>
+  <p style="margin-top:4mm"><b>Parte II — Documentação técnica</b> (para manutenção e evolução)</p>
+  <ol start="10">
+    <li>Arquitetura</li>
+    <li>Hardware e circuito</li>
+    <li>Firmware do ESP32</li>
+    <li>Simulação no Wokwi</li>
+    <li>Protocolo MQTT</li>
+    <li>API</li>
+    <li>App web</li>
+    <li>Infraestrutura e publicação</li>
+    <li>Segurança</li>
+    <li>Testes realizados</li>
+    <li>Limitações e próximos passos</li>
+  </ol>
+</section>
+
+<!-- ======================================================= PARTE I -->
+<section class="parte">
+  <div class="rotulo">Parte I</div>
+  <h1>Manual de utilização</h1>
+
+  <h2>1. O que o sistema faz</h2>
+  <p>O sistema controla a <b>bomba d'água</b> e as <b>válvulas solenoides</b> que dividem o viveiro em setores. Ele substitui o temporizador antigo e permite:</p>
+  <ul>
+    <li><b>Rotinas por horário</b>: por exemplo, "das 07:00 às 08:00, liga 30 segundos por setor, com pausa de 4 minutos". Quantas rotinas forem necessárias, em quaisquer dias da semana.</li>
+    <li><b>Blocos com mudas ou vazios</b>: o viveiro trabalha em rotação. Um bloco marcado como <i>vazio</i> nunca recebe água nem adubo — acaba o adubo jogado no chão.</li>
+    <li><b>Adubação (fertirrigação)</b>: liga só o motor por alguns minutos para misturar o adubo (a água volta pelo retorno) e depois irriga os blocos com mudas.</li>
+    <li><b>Pausa para visitas</b>: um toque suspende a irrigação para não molhar quem está olhando as mudas. Volta sozinha depois de um tempo, para ninguém esquecer.</li>
+    <li><b>Só motor</b>: liga a bomba sem abrir nenhuma válvula (para misturar o adubo), com desligamento automático.</li>
+    <li><b>Acesso de qualquer lugar</b> pelo celular ou computador: ver se está irrigando, comandar e consultar o histórico.</li>
+  </ul>
+  <div class="dica"><b>Importante:</b> as rotinas ficam gravadas <b>no próprio controlador</b> que está no viveiro. Se a internet cair, a irrigação continua normalmente — só o acompanhamento pelo app fica indisponível até a conexão voltar.</div>
+
+  <h2>2. Acessando o app</h2>
+  <p>Abra <b>https://irrigacao-viveiro.vercel.app</b> no navegador do celular ou do computador e entre com seu e-mail e senha.</p>
+  <figure class="baixa"><img src="img/app-login.png"><figcaption>Figura 1 — Tela de entrada.</figcaption></figure>
+  <h3>Instalar no celular (como um aplicativo)</h3>
+  <ul>
+    <li><b>Android (Chrome)</b>: abra o endereço, toque no menu <span class="kbd">⋮</span> e em <b>Adicionar à tela inicial</b> (ou <b>Instalar app</b>).</li>
+    <li><b>iPhone (Safari)</b>: abra o endereço, toque em <b>Compartilhar</b> <span class="kbd">⬆</span> e em <b>Adicionar à Tela de Início</b>.</li>
+  </ul>
+  <p>O ícone da gota aparece junto dos outros aplicativos e abre direto em tela cheia.</p>
+  <h3>Perfis de usuário</h3>
+  <table>
+    <tr><th style="width:24%">Perfil</th><th>O que pode fazer</th></tr>
+    <tr><td><span class="tag t-op">Operador</span></td><td>Ver tudo; pausar a irrigação; ligar o "só motor"; parar um ciclo; acionar um setor manualmente; marcar bloco com mudas ou vazio.</td></tr>
+    <tr><td><span class="tag t-adm">Administrador</span></td><td>Tudo do operador e também: criar, alterar e apagar rotinas; configurar setores; alterar os limites de segurança; cadastrar usuários.</td></tr>
+  </table>
+
+  <h2>3. Painel</h2>
+  <p>É a tela principal. No topo aparece o nome do controlador e o selo <b>Online</b> (verde) ou <b>Offline</b> (vermelho). Tudo se atualiza sozinho, em tempo real.</p>
+  <figure><img src="img/painel-ocioso.png"><figcaption>Figura 2 — Painel com o sistema aguardando a próxima rotina.</figcaption></figure>
+  <h3>3.1 Quadro "Agora"</h3>
+  <p>Mostra o que está acontecendo: <i>Aguardando a próxima rotina</i> (com o nome e o horário da próxima), <i>Irrigando</i> (com a rotina e o setor), <i>Irrigação pausada</i> ou <i>Só motor</i>. À direita, o selo da <b>bomba</b> fica azul e piscando quando ela está ligada.</p>
+  <figure><img src="img/painel-irrigando.png"><figcaption>Figura 3 — Irrigando: bomba ligada e o setor aberto destacado com 💦.</figcaption></figure>
+
+  <h3>3.2 Pausar irrigação (visitas)</h3>
+  <p>Toque em <b>Pausar irrigação</b>. Se houver um ciclo em andamento, a bomba desliga e as válvulas fecham com segurança; nenhuma rotina roda enquanto estiver pausado. O painel mostra a <b>contagem regressiva</b> até voltar sozinho ao automático (30 minutos, ajustável em Ajustes). Para voltar antes, toque em <b>Retomar irrigação</b>.</p>
+  <figure><img src="img/painel-pausa.png"><figcaption>Figura 4 — Irrigação pausada, com a contagem até voltar ao automático.</figcaption></figure>
+
+  <h3>3.3 Só motor (misturar o adubo)</h3>
+  <p>Toque em <b>Só motor</b>: a bomba liga <b>sem abrir nenhum setor</b> — a água circula pelo cano de retorno e mistura o adubo. Desliga sozinha após 15 minutos (ajustável) ou ao tocar em <b>Desligar motor</b>.</p>
+  <figure><img src="img/painel-so-motor.png"><figcaption>Figura 5 — Modo só motor ligado.</figcaption></figure>
+  <div class="nota">Antes de usar o só motor, confirme que o registro do <b>retorno</b> está aberto. Bomba ligada com todas as saídas fechadas pode danificar o equipamento.</div>
+
+  <h3>3.4 Parar o ciclo</h3>
+  <p>Quando há um ciclo rodando, aparece o botão vermelho <b>Parar o ciclo agora</b>. Ele interrompe só aquele ciclo; a rotina continua valendo e roda de novo no próximo horário.</p>
+
+  <h3>3.5 Setores: com mudas ou vazio</h3>
+  <p>Cada setor tem um botão que alterna entre <b>🌱 Com mudas</b> e <b>⚪ Vazio (não irriga)</b>. Ao tirar as bandejas de um bloco, marque-o como vazio: as rotinas e a adubação passam a pular esse bloco. Se todos os blocos de uma rotina estiverem vazios, a bomba nem liga.</p>
+  <figure><img src="img/painel-bloco-vazio.png"><figcaption>Figura 6 — Bloco 2 marcado como vazio.</figcaption></figure>
+
+  <h3>3.6 Acionar agora (manual)</h3>
+  <p>O botão <b>Acionar agora</b> de cada setor abre a válvula e liga a bomba pelo tempo escolhido (15 s a 5 min, ou outro valor). Funciona mesmo com o bloco marcado como vazio — útil para testar uma válvula. Só fica disponível quando não há outro ciclo rodando e o modo é automático.</p>
+  <figure class="baixa"><img src="img/acionar-modal.png"><figcaption>Figura 7 — Escolhendo por quanto tempo acionar o setor.</figcaption></figure>
+
+  <h3>3.7 Quando o controlador está offline</h3>
+  <p>Se o controlador ficar sem internet (ou sem energia), o selo fica vermelho e aparece um aviso com a hora da última notícia. Os botões de comando ficam desabilitados. As rotinas continuam rodando no controlador se ele estiver ligado.</p>
+  <figure><img src="img/painel-offline.png"><figcaption>Figura 8 — Aviso de controlador offline.</figcaption></figure>
+
+  <h2>4. Rotinas</h2>
+  <p>A tela <b>Rotinas</b> lista todas as rotinas com horário, dias, tempos, setores e quantos ciclos cada uma faz por dia.</p>
+  <figure><img src="img/rotinas.png"><figcaption>Figura 9 — Lista de rotinas.</figcaption></figure>
+  <h3>4.1 Como funciona um ciclo</h3>
+  <p>Exemplo: rotina <i>Manhã</i>, das 07:00 às 08:00, <b>30 s por setor</b>, <b>pausa de 4 min</b>, blocos 1 a 4:</p>
+  <ol>
+    <li>Às 07:00 abre o Bloco 1; 1 segundo depois liga a bomba.</li>
+    <li>Após 30 s abre o Bloco 2 e logo fecha o Bloco 1 (a bomba nunca fica empurrando contra tudo fechado). E assim até o Bloco 4, pulando os blocos vazios.</li>
+    <li>No fim desliga a bomba e, 2 segundos depois, fecha a válvula.</li>
+    <li>Espera a <b>pausa</b> de 4 minutos e repete — até dar 08:00.</li>
+  </ol>
+  <h3>4.2 Criar ou alterar uma rotina <span class="tag t-adm">Administrador</span></h3>
+  <p>Toque em <b>+ Nova rotina</b> ou em <b>Editar</b>. Antes de salvar, o quadro verde mostra a <b>prévia</b>: quantos ciclos vão acontecer e em quais horários.</p>
+  <figure><img src="img/rotina-form.png"><figcaption>Figura 10 — Formulário de rotina com a prévia dos horários.</figcaption></figure>
+  <table>
+    <tr><th style="width:24%">Campo</th><th>Significado</th></tr>
+    <tr><td>Nome</td><td>Até 23 letras. Ex.: Manhã, Tarde, Adubação.</td></tr>
+    <tr><td>Tipo</td><td><b>Irrigação</b>; <b>Adubação</b> (mistura antes do 1º ciclo); <b>Climatização</b> (para os setores externos).</td></tr>
+    <tr><td>Dias</td><td>Dias da semana em que a rotina começa.</td></tr>
+    <tr><td>Começa às / Até</td><td>Janela de funcionamento. Se o fim for menor que o início (ex.: 22:00 até 02:00), a rotina passa da meia-noite.</td></tr>
+    <tr><td>Ligado (s)</td><td>Quanto tempo <b>cada setor</b> fica aberto em cada ciclo.</td></tr>
+    <tr><td>Pausa (min)</td><td>Intervalo depois de desligar até o próximo ciclo. <b>0 = roda uma vez só</b> na janela.</td></tr>
+    <tr><td>Setores</td><td>Quais setores participam (um de cada vez, na ordem). Setores vazios ou não instalados aparecem apagados.</td></tr>
+    <tr><td>Rotina ativa</td><td>Desmarcada, a rotina fica guardada mas não roda.</td></tr>
+  </table>
+  <h3>4.3 Adubação</h3>
+  <p>Escolha o tipo <b>Adubação</b> e informe quantos minutos <b>misturar o adubo antes</b>. No horário marcado o controlador liga só o motor por esse tempo e, em seguida, irriga os blocos <b>com mudas</b>. Use pausa 0 para rodar uma vez só.</p>
+  <figure><img src="img/rotina-form-adubacao.png"><figcaption>Figura 11 — Rotina de adubação, com o tempo de mistura.</figcaption></figure>
+  <div class="nota">Se duas rotinas tiverem horários que se sobrepõem, o controlador avisa. Uma nunca interrompe a outra: quem estiver rodando termina o ciclo e a outra roda em seguida.</div>
+
+  <h2>5. Setores</h2>
+  <p>Cada setor é uma válvula solenoide. Hoje existem 6 posições: <b>4 blocos internos</b> e <b>2 setores externos</b>. O administrador define o nome, o tipo (interno/externo) e se a válvula está <b>instalada</b> — setor não instalado nunca abre. O operador pode marcar <b>com mudas / vazio</b>.</p>
+  <figure class="alta"><img src="img/setores.png"><figcaption>Figura 12 — Configuração dos setores.</figcaption></figure>
+
+  <h2>6. Histórico</h2>
+  <p>A aba <b>Acontecimentos</b> mostra tudo o que o controlador fez, dia a dia: rotinas iniciadas, válvulas abertas e fechadas, bomba ligada e desligada, pausas, setores pulados por estarem vazios, ajustes do relógio. A aba <b>Quem fez o quê</b> mostra cada comando enviado pelo app, por quem, quando e o que o controlador respondeu.</p>
+  <div class="lado">
+    <figure><img src="img/historico.png"><figcaption>Figura 13 — Acontecimentos. O horário é o do relógio do controlador (nesta demonstração ele foi adiantado para 06:59:55 para disparar a rotina da manhã).</figcaption></figure>
+    <figure><img src="img/historico-comandos.png"><figcaption>Figura 14 — Quem fez o quê.</figcaption></figure>
+  </div>
+
+  <h2>7. Ajustes e usuários</h2>
+  <p>Mostra os dados do controlador (relógio, há quanto tempo está ligado, sinal do Wi‑Fi). O administrador também ajusta os <b>limites de segurança</b> (tempo da pausa visita e do só motor) e gerencia os <b>usuários</b>: criar, mudar o perfil e desativar.</p>
+  <figure class="alta"><img src="img/ajustes.png"><figcaption>Figura 15 — Ajustes.</figcaption></figure>
+  <figure class="baixa"><img src="img/usuario-novo.png"><figcaption>Figura 16 — Cadastro de usuário.</figcaption></figure>
+
+  <h2>8. No celular</h2>
+  <p>No celular os menus ficam numa barra embaixo e os botões principais ocupam a largura toda, para usar com uma mão.</p>
+  <div class="lado">
+    <figure><img src="img/mobile-painel.png"><figcaption>Figura 17 — Painel.</figcaption></figure>
+    <figure><img src="img/mobile-rotinas.png"><figcaption>Figura 18 — Rotinas.</figcaption></figure>
+    <figure><img src="img/mobile-historico.png"><figcaption>Figura 19 — Histórico.</figcaption></figure>
+  </div>
+
+  <h2>9. Perguntas frequentes</h2>
+  <p><b>Caiu a internet. Para de irrigar?</b> Não. As rotinas estão gravadas no controlador. O app só volta a mostrar o estado quando a internet voltar.</p>
+  <p><b>Faltou energia. Perco as rotinas?</b> Não. A configuração fica gravada na memória do controlador e o relógio tem bateria própria. Ao voltar a energia, se a janela de uma rotina estiver aberta, ela roda um ciclo na hora.</p>
+  <p><b>Esqueci a pausa ligada.</b> Ela volta sozinha ao automático no tempo configurado (30 min por padrão).</p>
+  <p><b>O app diz "Offline", mas o viveiro está irrigando.</b> O controlador está sem internet (Wi‑Fi fraco ou fora do ar). A irrigação segue; verifique o roteador.</p>
+  <p><b>Toquei num botão e apareceu "O controlador não respondeu a tempo".</b> A internet do viveiro pode estar lenta. Confira no Histórico em alguns instantes se o comando foi executado antes de repetir.</p>
+  <p><b>E se o controlador estragar?</b> O quadro tem uma chave <b>MANUAL / DESLIGADO / AUTOMÁTICO</b>: no manual a bomba é ligada diretamente, sem o controlador.</p>
+</section>
+
+<!-- ======================================================= PARTE II -->
+<section class="parte">
+  <div class="rotulo">Parte II</div>
+  <h1>Documentação técnica</h1>
+
+  <h2>10. Arquitetura</h2>
+  <svg class="arq" viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+    <defs><marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#66746b"/></marker></defs>
+    <g fill="#fff" stroke="#2f6b3a" stroke-width="1.5">
+      <rect x="10" y="20" width="150" height="90" rx="10"/><rect x="210" y="20" width="150" height="90" rx="10"/>
+      <rect x="410" y="20" width="150" height="90" rx="10"/><rect x="610" y="20" width="140" height="90" rx="10"/>
+      <rect x="410" y="160" width="150" height="70" rx="10"/><rect x="10" y="160" width="150" height="70" rx="10"/>
+    </g>
+    <g fill="#24302a" text-anchor="middle">
+      <text x="85" y="48" font-weight="700">ESP32</text><text x="85" y="66">rotinas + segurança</text><text x="85" y="84">(no viveiro)</text>
+      <text x="285" y="48" font-weight="700">Broker MQTT</text><text x="285" y="66">EMQX Cloud</text><text x="285" y="84">TLS 8883</text>
+      <text x="485" y="48" font-weight="700">API</text><text x="485" y="66">NestJS (Render)</text><text x="485" y="84">ponte MQTT + SSE</text>
+      <text x="680" y="48" font-weight="700">App PWA</text><text x="680" y="66">React (Vercel)</text><text x="680" y="84">celular / PC</text>
+      <text x="485" y="190" font-weight="700">Postgres</text><text x="485" y="208">Neon</text>
+      <text x="85" y="186" font-weight="700">Relés / contator</text><text x="85" y="204">bomba + 6 solenoides</text>
+    </g>
+    <g stroke="#66746b" stroke-width="1.5" fill="none">
+      <path d="M162 65H208" marker-end="url(#s)" marker-start="url(#s)"/><path d="M362 65H408" marker-end="url(#s)" marker-start="url(#s)"/>
+      <path d="M562 65H608" marker-end="url(#s)" marker-start="url(#s)"/><path d="M485 112V158" marker-end="url(#s)" marker-start="url(#s)"/>
+      <path d="M85 112V158" marker-end="url(#s)"/>
+    </g>
+    <g fill="#66746b" font-size="10.5" text-anchor="middle">
+      <text x="185" y="56">MQTT</text><text x="385" y="56">MQTT</text><text x="585" y="56">HTTPS</text><text x="525" y="140">Prisma</text><text x="118" y="140">GPIO</text>
+    </g>
+  </svg>
+  <ul>
+    <li><b>Regra de ouro:</b> as rotinas rodam <b>no ESP32</b>. A nuvem só configura e acompanha; sem internet o viveiro continua sendo irrigado.</li>
+    <li>O navegador <b>nunca fala direto com o broker</b>: a API é a única ponte (guarda as credenciais, valida permissões e registra o histórico).</li>
+    <li>O mesmo conjunto de <b>comandos de texto</b> funciona pelo Serial (manutenção local) e pelo MQTT (app).</li>
+  </ul>
+  <table>
+    <tr><th>Peça</th><th>Tecnologia</th><th>Onde</th></tr>
+    <tr><td>Controlador</td><td>ESP32 (Arduino), RTC DS3231, relés</td><td>Quadro do viveiro (protótipo no Wokwi)</td></tr>
+    <tr><td>Broker</td><td>MQTT 3.1.1 com TLS, usuário/senha</td><td>EMQX Cloud Serverless — <code>d22ad7dc.ala.us-east-1.emqxsl.com:8883</code></td></tr>
+    <tr><td>API</td><td>NestJS 12, Prisma 7, mqtt.js, SSE</td><td>Render — <code>viveiro-api-5tq7.onrender.com</code></td></tr>
+    <tr><td>Banco</td><td>PostgreSQL</td><td>Neon</td></tr>
+    <tr><td>App</td><td>React 19, Vite, Tailwind, React Query, PWA</td><td>Vercel — <code>irrigacao-viveiro.vercel.app</code></td></tr>
+  </table>
+  <p>Repositório (monorepo npm workspaces): <code>apps/api</code>, <code>apps/app</code>, <code>firmware/</code>, <code>ferramentas/</code>, <code>docs/</code>, <code>render.yaml</code>, <code>.github/workflows/</code>.</p>
+
+  <h2>11. Hardware e circuito</h2>
+  <table>
+    <tr><th>Função</th><th>GPIO</th><th>Observação</th></tr>
+    <tr><td>Relé da bomba (aciona a bobina do contator)</td><td>23</td><td>Motor <b>sempre</b> via contator</td></tr>
+    <tr><td>Solenoides setores 1–4 (blocos internos)</td><td>19, 18, 5, 17</td><td>Solenoides 110 V via módulo de relés</td></tr>
+    <tr><td>Solenoides setores 5–6 (externos)</td><td>16, 4</td><td></td></tr>
+    <tr><td>Botão "Pausa visita"</td><td>32</td><td>INPUT_PULLUP, aciona em nível baixo</td></tr>
+    <tr><td>Botão "Só motor"</td><td>33</td><td>INPUT_PULLUP</td></tr>
+    <tr><td>RTC (SDA / SCL)</td><td>21 / 22</td><td>DS3231 na placa real (DS1307 no simulador)</td></tr>
+  </table>
+  <p>Módulos de relé comuns acionam em nível <b>baixo</b>; o firmware trata isso com <code>#define SIMULADOR 0</code> (no simulador os LEDs acendem em nível alto). Itens previstos: ESP32 DevKit, módulo de 8 relés optoacoplado (bomba + 6 setores + reserva), contator e disjuntor dimensionados pela plaqueta do motor, RTC DS3231, fonte 5 V com nobreak 18650, chave MAN/0/AUT, caixa IP65 e válvulas reguladoras de pressão por setor. A instalação de força deve ser feita por eletricista.</p>
+  <figure><img src="img/wokwi-ocioso-circuito.png"><figcaption>Figura 20 — Circuito no simulador: ESP32, RTC, LED da bomba (vermelho), setores 1–4 (verdes), setores 5–6 (azuis) e os dois botões.</figcaption></figure>
+
+  <h2>12. Firmware do ESP32</h2>
+  <p>Arquivo único <code>firmware/sketch.ino</code> (Arduino). Bibliotecas: RTClib, ArduinoJson 7, PubSubClient. Credenciais em <code>firmware/segredos.h</code> (fora do git; modelo em <code>segredos.exemplo.h</code>).</p>
+  <h3>12.1 Duas tarefas</h3>
+  <ul>
+    <li><b>Irrigação</b> (loop principal, núcleo 1, vigiada pelo <b>watchdog</b> de 10 s): agendador, máquina de ciclo, modos, botões, Serial, status.</li>
+    <li><b>Rede</b> (FreeRTOS, núcleo 0): Wi‑Fi, MQTT, publicação. Reconecta sozinha (Wi‑Fi a cada 15 s, MQTT a cada 5 s). Comunicação com a irrigação por <b>filas</b>; se a rede travar, a irrigação não percebe.</li>
+  </ul>
+  <h3>12.2 Máquina do ciclo e sequenciamento seguro</h3>
+  <table>
+    <tr><th>Estado</th><th>O que acontece</th></tr>
+    <tr><td>OCIOSO</td><td>Nada ligado; o agendador procura uma rotina devida.</td></tr>
+    <tr><td>MISTURANDO</td><td>Só adubação: bomba ligada, válvulas fechadas, pelo tempo de mistura.</td></tr>
+    <tr><td>ABRINDO</td><td>Válvula do 1º setor aberta; <b>1 s</b> depois liga a bomba.</td></tr>
+    <tr><td>IRRIGANDO</td><td>Setor atual aberto pelo tempo "ligado".</td></tr>
+    <tr><td>TROCANDO</td><td>Abre o próximo setor e, <b>0,5 s</b> depois, fecha o anterior.</td></tr>
+    <tr><td>DESLIGANDO</td><td>Bomba desligada; <b>2 s</b> depois fecha todas as válvulas (evita golpe de aríete).</td></tr>
+  </table>
+  <p>Proteções: bomba ligada continuamente por mais de 60 min é desligada (<i>failsafe</i>); pausa visita e só motor têm tempo máximo; setor vazio ou não instalado nunca entra na fila; sem setor disponível a bomba não liga.</p>
+  <h3>12.3 Agendador</h3>
+  <ul>
+    <li>Uma rotina está <b>devida</b> quando a janela está aberta, o dia confere (dia em que a janela <b>abre</b>) e: é o 1º ciclo da janela, ou já passou a <b>pausa</b> desde o fim do último ciclo.</li>
+    <li>Pausa 0 = execução única por janela. Janela com fim &lt; início cruza a meia-noite.</li>
+    <li>Só um ciclo por vez; rotinas sobrepostas esperam.</li>
+  </ul>
+  <h3>12.4 Persistência, relógio e modos</h3>
+  <ul>
+    <li>Configuração (setores, rotinas, limites) em JSON na <b>NVS</b> (Preferences) — gravação atômica; padrão de fábrica com 3 rotinas de exemplo.</li>
+    <li>Relógio: RTC com bateria + <b>NTP</b> ao conectar e a cada 6 h; fuso <code>&lt;-04&gt;4</code> (Rondônia, UTC−4).</li>
+    <li>Modos: AUTOMATICO, PAUSA VISITA, SO MOTOR (botões físicos ou comandos).</li>
+  </ul>
+  <h3>12.5 Comandos (Serial e MQTT)</h3>
+  <table>
+    <tr><th style="width:38%">Comando</th><th>Efeito</th></tr>
+    <tr><td><code>status</code> · <code>rotinas</code> · <code>config</code> · <code>rede</code></td><td>Consultas</td></tr>
+    <tr><td><code>pausa</code> · <code>motor</code> · <code>parar</code></td><td>Liga/desliga pausa visita e só motor; interrompe o ciclo</td></tr>
+    <tr><td><code>setor N S</code></td><td>Aciona o setor N por S segundos (manual)</td></tr>
+    <tr><td><code>bloco N mudas|vazio</code></td><td>Marca o bloco</td></tr>
+    <tr><td><code>rotina {json}</code></td><td>Sem <code>id</code> cria; com <code>id</code> altera só os campos enviados</td></tr>
+    <tr><td><code>apagar|ativar|desativar|prever ID</code></td><td>Gerência de rotinas</td></tr>
+    <tr><td><code>setorcfg N {json}</code> · <code>param {json}</code></td><td>Configura setor; limites (<code>pausaVisitaMin</code>, <code>soMotorMin</code>)</td></tr>
+    <tr><td><code>hora HH:MM[:SS]</code> · <code>data AAAA-MM-DD</code></td><td>Ajuste manual do relógio</td></tr>
+    <tr><td><code>fabrica</code> · <code>reiniciar</code></td><td>Padrão de fábrica; reinicia o ESP32</td></tr>
+  </table>
+
+  <h2>13. Simulação no Wokwi</h2>
+  <p>O protótipo roda no simulador <b>wokwi.com</b> (ESP32 com Wi‑Fi real). Para rodar: novo projeto ESP32, colar <code>sketch.ino</code> e <code>diagram.json</code>, criar a aba <code>segredos.h</code> (sem ela, usa o broker público de testes) e clicar em ▶. Não salve o projeto com o <code>segredos.h</code> (projetos salvos ficam acessíveis a quem tiver o link).</p>
+  <figure><img src="img/wokwi-irrigando-tela.png"><figcaption>Figura 21 — Wokwi: código à esquerda; circuito e Serial Monitor à direita.</figcaption></figure>
+  <div class="lado">
+    <figure><img src="img/wokwi-irrigando-circuito.png"><figcaption>Figura 22 — Acionamento manual: bomba e setor 1 acesos.</figcaption></figure>
+    <figure><img src="img/wokwi-so-motor-circuito.png"><figcaption>Figura 23 — Só motor: só a bomba acesa.</figcaption></figure>
+  </div>
+  <div class="lado">
+    <figure><img src="img/wokwi-rotina-circuito.png"><figcaption>Figura 24 — Rotina Manhã: setor 1.</figcaption></figure>
+    <figure><img src="img/wokwi-rotina-setor2-circuito.png"><figcaption>Figura 25 — Mesma rotina, já no setor 2.</figcaption></figure>
+  </div>
+  <figure><img src="img/wokwi-rotina-setor2-serial.png"><figcaption>Figura 26 — Serial Monitor: sequência de válvulas e bomba registrada pelo firmware.</figcaption></figure>
+  <div class="nota">Com a aba do Wokwi em segundo plano, o navegador desacelera a simulação e o controlador pode aparecer "offline" por alguns segundos. É limitação do simulador; o ESP32 real não tem esse comportamento.</div>
+
+  <h2>14. Protocolo MQTT</h2>
+  <p>Prefixo do controlador: <code>viveiro-cafe/proto-bea19c</code> (constante <code>MQTT_PREFIXO</code> no firmware e campo <code>prefixo</code> no banco).</p>
+  <table>
+    <tr><th>Tópico</th><th>Sentido</th><th>Retido</th><th>Conteúdo</th></tr>
+    <tr><td><code>&lt;prefixo&gt;/conexao</code></td><td>ESP32 → API</td><td>sim</td><td><code>online</code> / <code>offline</code> (o offline é o <i>Last Will</i>, publicado pelo broker)</td></tr>
+    <tr><td><code>&lt;prefixo&gt;/status</code></td><td>ESP32 → API</td><td>sim</td><td>Estado atual; quando muda e a cada 30 s</td></tr>
+    <tr><td><code>&lt;prefixo&gt;/config</code></td><td>ESP32 → API</td><td>sim</td><td>Configuração completa; no boot e a cada alteração</td></tr>
+    <tr><td><code>&lt;prefixo&gt;/evento</code></td><td>ESP32 → API</td><td>não</td><td><code>{"hora":"07:00:00","msg":"Setor 1 (Bloco 1) ABERTO"}</code></td></tr>
+    <tr><td><code>&lt;prefixo&gt;/cmd</code></td><td>API → ESP32</td><td>não</td><td>Comando em texto (tabela 12.5)</td></tr>
+    <tr><td><code>&lt;prefixo&gt;/resposta</code></td><td>ESP32 → API</td><td>não</td><td><code>{"cmd":"…","saida":"texto impresso pelo comando"}</code></td></tr>
+  </table>
+  <pre>status: {"modo":"AUTOMATICO","ciclo":"irrigando","rotinaId":1,"rotina":"Manha","bomba":true,
+         "setores":[{"n":1,"aberto":true,"mudas":true,"instalado":true}, …],
+         "hora":"2026-11-13T07:00:31","uptimeS":1234,"wifiRssi":-65}
+
+rotina: {"id":1,"nome":"Manha","tipo":"irrigacao","dias":"todos","inicio":"07:00","fim":"08:00",
+         "ligado":30,"pausa":240,"setores":[1,2,3,4],"ativa":true}</pre>
+
+  <h2>15. API</h2>
+  <p>NestJS 12 + Prisma 7 (Postgres). Autenticação JWT (7 dias), senhas com bcrypt, limite de requisições (throttler), CORS restrito ao app.</p>
+  <table>
+    <tr><th>Rota</th><th>Quem</th><th>Função</th></tr>
+    <tr><td><code>POST /auth/login</code>, <code>GET /auth/me</code></td><td>todos</td><td>Login</td></tr>
+    <tr><td><code>GET /controladores[/:id]</code></td><td>todos</td><td>Status, config, online, última notícia</td></tr>
+    <tr><td><code>GET /controladores/:id/tempo-real</code></td><td>todos</td><td>SSE: <code>status</code>, <code>config</code>, <code>conexao</code>, <code>evento</code>, <code>ping</code></td></tr>
+    <tr><td><code>GET /controladores/:id/eventos</code></td><td>todos</td><td>Histórico paginado</td></tr>
+    <tr><td><code>GET|POST /controladores/:id/comandos</code></td><td>por perfil</td><td>Auditoria / envia comando e espera a resposta (até 15 s)</td></tr>
+    <tr><td><code>POST /controladores</code></td><td>admin</td><td>Cadastra outro controlador</td></tr>
+    <tr><td><code>GET|POST|PATCH /usuarios</code></td><td>admin</td><td>Usuários</td></tr>
+    <tr><td><code>GET /saude</code></td><td>público</td><td>Health check (<code>{"ok":true,"mqtt":true}</code>)</td></tr>
+  </table>
+  <p><b>Permissões de comando</b> — operador: <code>status rede rotinas config prever pausa motor parar setor bloco</code>; administrador: também <code>rotina apagar ativar desativar setorcfg param hora data reiniciar fabrica</code>.</p>
+  <p><b>Banco:</b> <code>Usuario</code> (perfil ADMIN/OPERADOR), <code>Controlador</code> (prefixo, online, vistoEm, último status e config em JSON), <code>Evento</code> (histórico), <code>Comando</code> (auditoria: usuário, texto, resposta, horários). Suporta vários controladores.</p>
+  <p><b>Ponte MQTT:</b> assina <code>&lt;prefixo&gt;/#</code>; mensagens retidas recebidas logo após assinar não contam como "sinal de vida" (o EMQX/HiveMQ podem marcar retain também em mensagens ao vivo, por isso o critério de 5 s).</p>
+
+  <h2>16. App web</h2>
+  <p>React 19 + Vite + Tailwind 4 + React Query, instalável (PWA). Recebe as atualizações por SSE e atualiza o cache sem recarregar; ao reconectar ou voltar ao primeiro plano, ressincroniza com a API. A prévia de rotina usa a mesma conta do firmware. A contagem regressiva da pausa é calculada no navegador entre um status e outro.</p>
+
+  <h2>17. Infraestrutura e publicação</h2>
+  <table>
+    <tr><th>Serviço</th><th>Plano</th><th>Configuração</th></tr>
+    <tr><td>Neon (Postgres)</td><td>grátis</td><td><code>DATABASE_URL</code> no Render (conexão direta, <code>sslmode=require</code>)</td></tr>
+    <tr><td>EMQX Cloud Serverless</td><td>grátis, limite de gasto 0</td><td>1 mi minutos de sessão e 1 GB/mês; uso estimado ~86 mil min e ~100 MB. Usuários <code>viveiro-api</code> e <code>viveiro-esp32</code></td></tr>
+    <tr><td>Render (API)</td><td>grátis</td><td><code>render.yaml</code>: build compila, aplica migrações e roda o seed. Variáveis: banco, MQTT, CORS, admin inicial</td></tr>
+    <tr><td>Vercel (app)</td><td>grátis</td><td>Root <code>apps/app</code>; <code>VITE_API_URL</code></td></tr>
+    <tr><td>GitHub Actions</td><td>grátis</td><td><code>despertador.yml</code> acessa <code>/saude</code> a cada 10 min (o Render grátis dorme após 15 min)</td></tr>
+  </table>
+  <p><b>Atualizar:</b> <code>git push</code> na <code>main</code> publica API e app automaticamente. Alterações no banco: gerar a migração localmente (<code>npm run db:migrate -w apps/api</code>) e versionar <code>prisma/migrations</code>. <b>Rodar local:</b> <code>npm install</code>, <code>npm run db:up</code>, <code>npm run seed -w apps/api</code>, <code>npm run dev:api</code>, <code>npm run dev:app</code>.</p>
+
+  <h2>18. Segurança</h2>
+  <ul>
+    <li>MQTT com <b>TLS</b>; o ESP32 valida o certificado do broker (raízes ISRG Root X1 e DigiCert Global Root G2 embutidas) e usa usuário/senha próprios.</li>
+    <li>Segredos fora do código: <code>.env</code> e <code>segredos.h</code> ignorados pelo git; credenciais só nos painéis dos serviços.</li>
+    <li>O navegador não acessa o broker; a API valida cada comando pelo perfil e registra quem enviou.</li>
+    <li>O seed se recusa a criar o administrador sem senha definida fora do ambiente local.</li>
+  </ul>
+
+  <h2>19. Testes realizados (novembro de 2026)</h2>
+  <ul>
+    <li><b>Firmware no Wokwi:</b> rotina com troca de setores e sequenciamento seguro; só motor; pausa visita com retorno; bloco vazio pulado; adubação com mistura; persistência após reinício; rotina cruzando a meia-noite; validação de comandos inválidos.</li>
+    <li><b>MQTT:</b> status/config/eventos retidos e ao vivo; comandos e respostas; Last Will (offline) ao parar a simulação; NTP.</li>
+    <li><b>App + API:</b> login, painel em tempo real, acionamento manual, pausa, histórico, rotinas com prévia, layout no celular; 5 testes automatizados da API (permissões e detecção de erro).</li>
+    <li><b>Produção:</b> API conectada ao EMQX com TLS, CORS restrito ao app, ESP32 simulado conectado com TLS e aparecendo online no app; despertador executado com sucesso.</li>
+  </ul>
+
+  <h2>20. Limitações e próximos passos</h2>
+  <ul>
+    <li>API no plano grátis do Render: mesmo com o despertador, pode haver breves períodos dormindo (eventos desse intervalo não ficam no histórico). Para uso real, plano Starter (~US$ 7/mês).</li>
+    <li>Eventos gerados enquanto o controlador está sem internet não são reenviados depois.</li>
+    <li>O aviso de conflito entre rotinas é aproximado (compara horários e dias).</li>
+    <li><b>Fase 5</b> — sensores de umidade do solo e do ar e de temperatura, gráficos e automações (ex.: pular ciclo com solo úmido, nebulizar acima de 30 °C).</li>
+    <li><b>Fase 6</b> — compra do hardware e teste em bancada (pendente: foto da plaqueta da bomba para dimensionar contator e disjuntor).</li>
+    <li><b>Fases 7 e 8</b> — instalação no viveiro (quadro IP65, chave MAN/0/AUT, eletricista), atualização remota do firmware (OTA) e alerta de offline.</li>
+  </ul>
+</section>
+</body>
+</html>

@@ -12,3 +12,4 @@ npm-debug.log*
 
 # Credenciais do firmware
 firmware/segredos.h
+ferramentas/documentacao/node_modules/
