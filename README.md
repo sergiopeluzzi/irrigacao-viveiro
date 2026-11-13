@@ -140,7 +140,7 @@ Campos: nome, tipo (Irrigação / Adubação / Climatização), dias da semana, 
 | Parte | Tecnologia |
 |-------|-----------|
 | Firmware | ESP32, Arduino framework (PlatformIO ou Arduino IDE) |
-| Broker | HiveMQ Cloud (plano grátis) |
+| Broker | EMQX Cloud Serverless (plano grátis) |
 | API | NestJS + `@nestjs/microservices` (MQTT) + Prisma |
 | Banco | Postgres (Neon grátis) |
 | Front | React + Vite, **PWA** (instala no celular) |
@@ -302,13 +302,13 @@ rotina {"nome":"Nebulizacao","tipo":"climatizacao","inicio":"12:00","fim":"16:00
 | Constante | Protótipo (Wokwi) | Produção |
 |-----------|-------------------|----------|
 | `WIFI_SSID` / `WIFI_SENHA` | `Wokwi-GUEST` / vazio | Wi‑Fi do viveiro |
-| `MQTT_HOST` / `MQTT_PORTA` | `broker.hivemq.com` / 1883 | HiveMQ Cloud / 8883 |
+| `MQTT_HOST` / `MQTT_PORTA` | `broker.hivemq.com` / 1883 | EMQX Cloud / 8883 (via `segredos.h`) |
 | `MQTT_TLS` | 0 | 1 |
-| `MQTT_USUARIO` / `MQTT_SENHA` | vazio | credenciais do HiveMQ Cloud |
+| `MQTT_USUARIO` / `MQTT_SENHA` | vazio | usuário do EMQX (via `segredos.h`) |
 | `MQTT_PREFIXO` | `viveiro-cafe/proto-bea19c` | um prefixo único por cliente |
 | `FUSO_HORARIO` | `<-04>4` | `<-04>4` — o viveiro fica em **Rondônia** (UTC‑4) |
 
-> ⚠️ **O broker público é só para testes**: qualquer pessoa que souber o prefixo consegue ler e mandar comandos. Em produção (Fase 4/6) vamos usar HiveMQ Cloud com usuário/senha e TLS. Com `MQTT_TLS 1` o código já usa conexão criptografada, mas ainda sem validar o certificado (`setInsecure`) — falta incluir o certificado raiz antes de instalar no cliente.
+> ⚠️ **O broker público é só para testes**: qualquer pessoa que souber o prefixo consegue ler e mandar comandos. Em produção usamos EMQX Cloud com usuário/senha e TLS (seção 12): com `MQTT_TLS 1` o ESP32 valida o certificado do broker (raízes Let's Encrypt e DigiCert embutidas).
 
 ### Tópicos (`<prefixo>` = `viveiro-cafe/proto-bea19c`)
 
@@ -455,17 +455,17 @@ Tudo se atualiza em tempo real; se a conexão cair, o app reconecta e ressincron
 
 ### Pendências da Fase 4
 - **Publicar**: Postgres (Neon), API (Render — plano pago, o grátis dorme e perde eventos/histórico), app (Vercel), `CORS_ORIGINS` e `VITE_API_URL`.
-- **Broker com senha** (HiveMQ Cloud + TLS no ESP32 e na API) antes de ir para o cliente.
+- **Broker com senha** (EMQX Cloud + TLS no ESP32 e na API) antes de ir para o cliente — preparado na seção 12.
 - Trocar a senha do admin do seed; criar os usuários do cliente.
 - O firmware que está no Wokwi ainda é o de antes do fuso de Rondônia — colar o `sketch.ino` atual.
 - Não testado: salvar rotina pelo app até o fim (o Wokwi estava a 3 % de velocidade com o painel do navegador oculto); o caminho é o mesmo dos outros comandos, já testados.
 
 ---
 
-## 12. Publicação (Neon + HiveMQ Cloud + Render + Vercel)
+## 12. Publicação (Neon + EMQX Cloud + Render + Vercel)
 
 ```
-[ESP32] ⇄ MQTT/TLS ⇄ [HiveMQ Cloud] ⇄ [API no Render] ⇄ [Postgres no Neon]
+[ESP32] ⇄ MQTT/TLS ⇄ [EMQX Cloud]  ⇄ [API no Render] ⇄ [Postgres no Neon]
                                           ⇅
                                    [App na Vercel]
 ```
@@ -476,18 +476,20 @@ Repositório: **github.com/sergiopeluzzi/irrigacao-viveiro** (privado). Segredos
 1. neon.tech → New project (região **AWS São Paulo** ou a mais próxima do Render).
 2. Copie a **connection string** (Dashboard → Connect). Ela vai no Render como `DATABASE_URL`.
 
-### 2. Broker — HiveMQ Cloud (grátis, "Serverless")
-1. console.hivemq.cloud → Create cluster (Serverless/Free).
-2. Anote a **Cluster URL** (ex.: `abc123.s1.eu.hivemq.cloud`). Porta TLS: **8883**.
-3. Access Management → **Credentials**: crie **duas** credenciais, com permissão de publicar e assinar:
+### 2. Broker — EMQX Cloud Serverless (grátis)
+> O HiveMQ Cloud deixou de ter plano grátis gerenciado (em nov/2026 só oferecia broker para você mesmo hospedar).
+1. https://www.emqx.com/en/cloud → crie a conta → **New Deployment → Serverless** (grátis: 1 milhão de minutos de sessão/mês; nosso uso, ESP32 + API ligados 24 h, é ~86 mil).
+2. Na **Overview** do deployment, anote o **Address** (ex.: `xxxxxxxx.ala.us-east-1.emqxsl.com`) e a porta **MQTT over TLS: 8883**.
+3. **Access Control → Authentication → Add**: crie **dois** usuários:
    - `viveiro-api` → vai no Render (`MQTT_USUARIO` / `MQTT_SENHA`);
    - `viveiro-esp32` → vai no `firmware/segredos.h`.
+4. O certificado do EMQX (DigiCert Global Root G2) já está no firmware, junto com o do Let's Encrypt.
 
 ### 3. API — Render (plano grátis)
 1. dashboard.render.com → **New → Blueprint** → escolha o repositório `irrigacao-viveiro` (ele lê o `render.yaml`).
 2. Preencha as variáveis pedidas:
    - `DATABASE_URL` = connection string do Neon
-   - `MQTT_URL` = `mqtts://<Cluster URL>:8883`, `MQTT_USUARIO` / `MQTT_SENHA` = credencial `viveiro-api`
+   - `MQTT_URL` = `mqtts://<Address do EMQX>:8883`, `MQTT_USUARIO` / `MQTT_SENHA` = credencial `viveiro-api`
    - `SEED_ADMIN_NOME`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_SENHA` = seu login de administrador
    - `CORS_ORIGINS` = deixe em branco por enquanto (preenche no passo 5)
 3. O build instala, compila, cria as tabelas (`prisma migrate deploy`) e cria o admin e o controlador (seed). Depois do deploy, `https://<sua-api>.onrender.com/saude` deve responder `{"ok":true,"mqtt":true}`.
@@ -502,7 +504,7 @@ Repositório: **github.com/sergiopeluzzi/irrigacao-viveiro** (privado). Segredos
 
 ### 5. Ligar as pontas
 1. No Render, `CORS_ORIGINS` = URL do app na Vercel → salvar (a API reinicia).
-2. Firmware: copie `firmware/segredos.exemplo.h` para `segredos.h`, preencha Cluster URL e a credencial `viveiro-esp32`. No **Wokwi**, crie uma aba `segredos.h` com esse conteúdo e cole o `sketch.ino` atual.
+2. Firmware: copie `firmware/segredos.exemplo.h` para `segredos.h`, preencha o Address do EMQX e o usuário `viveiro-esp32`. No **Wokwi**, crie uma aba `segredos.h` com esse conteúdo e cole o `sketch.ino` atual.
    ⚠️ Não salve/compartilhe o projeto do Wokwi com a senha dentro (projetos salvos no Wokwi grátis são públicos).
 3. Rode a simulação: no Serial deve aparecer `MQTT conectado em <cluster>`; no app, o controlador fica **Online**.
 
